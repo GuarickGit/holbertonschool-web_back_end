@@ -1,38 +1,44 @@
 #!/usr/bin/env python3
-"""Asynchronous routine to spawn multiple wait_random calls
-and return sorted delays."""
+"""
+This module provides an asynchronous routine to run multiple coroutines
+concurrently, each waiting for a random delay, and collects the results in
+ascending order of completion.
+"""
 
 import asyncio
-import bisect
-
 from typing import List
 
 # Importation de la fonction wait_random définie dans un autre fichier
 wait_random = __import__('0-basic_async_syntax').wait_random
 
 
-async def wait_n(n: int, max_delay: int) -> list[float]:
+async def wait_n(n: int, max_delay: int) -> List[float]:
     """
-    Spawn `n` asynchronous tasks that each wait for a random delay up to
-    `max_delay`, then return a list of the delays in ascending order.
+    Executes the wait_random coroutine n times concurrently with the given
+    max_delay.
+    Returns a list of the delays in the order they complete
+    (not the order they were started).
 
     Args:
-        n (int): Number of tasks to spawn.
-        max_delay (int): Maximum delay (in seconds) for each task.
+        n (int): The number of times to call wait_random.
+        max_delay (int): The maximum possible delay for each wait_random call.
 
     Returns:
-        list[float]: Sorted list of delays from all tasks.
+        List[float]: A list of floats representing the actual delays, sorted
+                     in the order they completed.
     """
-    # Création des tâches asynchrones avec wait_random
-    tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
-
-    # Liste pour stocker les délais au fur et à mesure
+    # Liste pour stocker les délais à mesure qu'ils sont renvoyés
     delays: List[float] = []
 
-    # asyncio.as_completed retourne les tâches dans
-    # l'ordre où elles se terminent
-    for task in asyncio.as_completed(tasks):
-        delay = await task  # On attend que la tâche soit terminée
-        bisect.insort(delays, delay)  # Insertion triée du délai dans la liste
+    # Création d'une liste de tâches asynchrones, chacune appelant
+    # wait_random(max_delay)
+    tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
 
-    return (delays)  # On retourne la liste finale triée des délais
+    # Récupération des résultats des tâches au fur et à mesure qu'elles
+    # se terminent
+    for task in asyncio.as_completed(tasks):
+        delay = await task  # On attend la fin de la tâche
+        delays.append(delay)
+
+    # La liste finale contient les délais dans l'ordre de complétion
+    return delays
