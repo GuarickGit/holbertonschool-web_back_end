@@ -5,6 +5,8 @@ and return sorted delays."""
 import asyncio
 import bisect
 
+from typing import List
+
 # Importation de la fonction wait_random définie dans un autre fichier
 wait_random = __import__('0-basic_async_syntax').wait_random
 
@@ -24,7 +26,8 @@ async def wait_n(n: int, max_delay: int) -> list[float]:
     # Création des tâches asynchrones avec wait_random
     tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
 
-    delays = []  # Liste pour stocker les délais au fur et à mesure
+    # Liste pour stocker les délais au fur et à mesure
+    delays: List[float] = []
 
     # asyncio.as_completed retourne les tâches dans
     # l'ordre où elles se terminent
