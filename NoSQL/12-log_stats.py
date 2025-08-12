@@ -1,40 +1,40 @@
 #!/usr/bin/env python3
-"""
-Provides stats about Nginx logs stored in MongoDB.
+"""Provide some stats about Nginx logs stored in MongoDB.
 
-Database: logs
-Collection: nginx
-Output format (exactly as required):
+This script connects to a MongoDB instance, queries the `logs.nginx`
+collection, and displays:
+- The total number of logs
+- The number of logs per HTTP method
+- The number of status check logs (method GET and path /status)
 
-<total> logs
-Methods:
-    method GET: <count>
-    method POST: <count>
-    method PUT: <count>
-    method PATCH: <count>
-    method DELETE: <count>
-<status_count> status check
+The output format is fixed to match Holberton's requirements.
 """
+
 from pymongo import MongoClient
-
 
 if __name__ == "__main__":
     client = MongoClient('mongodb://127.0.0.1:27017')
-    database = client.logs
-    collection = database.nginx
+    nginx_collection = client.logs.nginx
 
-    total_logs = collection.count_documents({})
+    total_logs = nginx_collection.count_documents({})
 
-    print(f"{total_logs} logs")
+    GET = nginx_collection.count_documents({"method": "GET"})
+    POST = nginx_collection.count_documents({"method": "POST"})
+    PUT = nginx_collection.count_documents({"method": "PUT"})
+    PATCH = nginx_collection.count_documents({"method": "PATCH"})
+    DELETE = nginx_collection.count_documents({"method": "DELETE"})
+
+    status_check = nginx_collection.count_documents(
+        {"method": "GET", "path": "/status"}
+    )
+
+    print(total_logs, "logs")
 
     print("Methods:")
-    # Pour chaque méthode HTTP, on compte combien de fois elle apparaît
-    # dans les logs
-    for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
-        count = collection.count_documents({"method": method})
-        print(f"\tmethod {method}: {count}")
 
-    status_check = collection.count_documents(
-        {"method": "GET", "path": "/status"})
-
-    print(f"{status_check} status check")
+    print("\tmethod GET:", GET)
+    print("\tmethod POST:", POST)
+    print("\tmethod PUT:", PUT)
+    print("\tmethod PATCH:", PATCH)
+    print("\tmethod DELETE:", DELETE)
+    print(status_check, "status check")
