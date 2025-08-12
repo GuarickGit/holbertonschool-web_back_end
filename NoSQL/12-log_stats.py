@@ -18,11 +18,11 @@ if __name__ == "__main__":
 
     total_logs = nginx_collection.count_documents({})
 
-    GET = nginx_collection.count_documents({"method": "GET"})
-    POST = nginx_collection.count_documents({"method": "POST"})
-    PUT = nginx_collection.count_documents({"method": "PUT"})
-    PATCH = nginx_collection.count_documents({"method": "PATCH"})
-    DELETE = nginx_collection.count_documents({"method": "DELETE"})
+    get_count = nginx_collection.count_documents({"method": "GET"})
+    post_count = nginx_collection.count_documents({"method": "POST"})
+    put_count = nginx_collection.count_documents({"method": "PUT"})
+    patch_count = nginx_collection.count_documents({"method": "PATCH"})
+    delete_count = nginx_collection.count_documents({"method": "DELETE"})
 
     status_check = nginx_collection.count_documents(
         {"method": "GET", "path": "/status"}
@@ -32,9 +32,9 @@ if __name__ == "__main__":
 
     print("Methods:")
 
-    print("\tmethod GET:", GET)
-    print("\tmethod POST:", POST)
-    print("\tmethod PUT:", PUT)
-    print("\tmethod PATCH:", PATCH)
-    print("\tmethod DELETE:", DELETE)
+    print("\tmethod GET:", get_count)
+    print("\tmethod POST:", post_count)
+    print("\tmethod PUT:", put_count)
+    print("\tmethod PATCH:", patch_count)
+    print("\tmethod DELETE:", delete_count)
     print(status_check, "status check")
