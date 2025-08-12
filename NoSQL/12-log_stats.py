@@ -19,24 +19,19 @@ from pymongo import MongoClient
 
 
 if __name__ == "__main__":
+    """provide stats about nginx logs"""
     client = MongoClient('mongodb://127.0.0.1:27017')
-    database = client.logs
-    collection = database.nginx
+    db = client['logs']
+    collection = db['nginx']
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
 
-    total_logs = collection.count_documents({})
-
-    print(f"{total_logs} logs")
-
+    print(f"{collection.count_documents({})} logs")
     print("Methods:")
-    # Pour chaque méthode HTTP, on compte combien de fois elle apparaît
-    # dans les logs
-    for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
+    for method in methods:
         count = collection.count_documents({"method": method})
         print(f"\tmethod {method}: {count}")
 
-    status_check = collection.count_documents(
-        {"method": "GET", "path": "/status"})
-
-    print(f"{status_check} status check")
+    print(collection.count_documents({"method": "GET", "path": "/status"}),
+          "status check")
 
     client.close()
