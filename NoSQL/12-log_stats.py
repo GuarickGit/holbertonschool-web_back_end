@@ -1,42 +1,22 @@
 #!/usr/bin/env python3
-"""
-Provides stats about Nginx logs stored in MongoDB.
-
-Database: logs
-Collection: nginx
-Output format (exactly as required):
-
-<total> logs
-Methods:
-    method GET: <count>
-    method POST: <count>
-    method PUT: <count>
-    method PATCH: <count>
-    method DELETE: <count>
-<status_count> status check
-"""
+"""Provides some stats about Nginx logs stored in MongoDB"""
 from pymongo import MongoClient
 
 
 if __name__ == "__main__":
     client = MongoClient('mongodb://127.0.0.1:27017')
-    database = client.logs
-    collection = database.nginx
+    db = client["logs"]
+    collection = db["nginx"]
 
-    total_logs = collection.count_documents({})
+    all_logs = collection.count_documents({})
+    print(f"{all_logs} logs")
 
-    print(f"{total_logs} logs")
-
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
     print("Methods:")
-    # Pour chaque méthode HTTP, on compte combien de fois elle apparaît
-    # dans les logs
-    for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
+    for method in methods:
         count = collection.count_documents({"method": method})
         print(f"\tmethod {method}: {count}")
 
-    status_check = collection.count_documents(
-        {"method": "GET", "path": "/status"})
-
-    print(f"{status_check} status check")
-
-    client.close()
+    count_path = collection.count_documents({"method": "GET",
+                                             "path": "/status"})
+    print(f"{count_path} status check")
