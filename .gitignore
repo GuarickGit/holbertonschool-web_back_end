@@ -16086,3 +16086,5 @@ ES6_classes/node_modules/yocto-queue/index.js
 ES6_classes/node_modules/yocto-queue/license
 ES6_classes/node_modules/yocto-queue/package.json
 ES6_classes/node_modules/yocto-queue/readme.md
+ES6_classes/.eslintrc.js
+ES6_classes/babel.config.js
