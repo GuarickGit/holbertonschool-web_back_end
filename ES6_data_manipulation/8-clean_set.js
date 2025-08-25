@@ -1,6 +1,8 @@
 export default function cleanSet(set, startString) {
   // Si la chaîne de départ est vide, on retourne une chaîne vide directement
-  if (!startString) return "";
+  if (startString === "" ) {
+    return "";
+  }
 
   // Tableau qui va contenir les morceaux de chaînes filtrés
   const result = [];
