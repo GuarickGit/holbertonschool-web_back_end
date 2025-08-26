@@ -47446,3 +47446,10 @@ ES6_promise/node_modules/which-typed-array/tsconfig.json
 ES6_promise/node_modules/which-typed-array/.github/FUNDING.yml
 ES6_promise/node_modules/which-typed-array/test/index.js
 ES6_promise/.babelrc
+ES6_promise/eslint.config.js
+ES6_promise/node_modules/@eslint/eslintrc/node_modules/globals/globals.json
+ES6_promise/node_modules/@eslint/eslintrc/node_modules/globals/index.d.ts
+ES6_promise/node_modules/@eslint/eslintrc/node_modules/globals/index.js
+ES6_promise/node_modules/@eslint/eslintrc/node_modules/globals/license
+ES6_promise/node_modules/@eslint/eslintrc/node_modules/globals/package.json
+ES6_promise/node_modules/@eslint/eslintrc/node_modules/globals/readme.md
